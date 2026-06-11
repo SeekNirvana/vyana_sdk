@@ -1,3 +1,16 @@
+## 0.2.2
+
+- Fixed iOS ring capability detection so ad-hoc HR/SpO2/etc. tests appear.
+  `getDeviceFeature` now polls the peripheral's `supportItems` until the SDK has
+  populated it (from advertisement/scan data and the post-connect handshake)
+  instead of returning an all-false map on the first read. This previously broke
+  capability detection — and, because the app gates one-shot measurements on
+  those flags, ad-hoc tests — whenever the ring was reached via auto-reconnect
+  without a fresh scan.
+- `getDeviceFeature` now reports `PluginState.unavailable` (rather than a bogus
+  `succeed` with every flag false) when the capability bitmap has not populated,
+  letting the Flutter layer distinguish "not ready, retry" from "unsupported".
+
 ## 0.2.1
 
 - Fixed iOS Bluetooth readiness reporting so an already-connected PRANA
