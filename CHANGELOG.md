@@ -1,3 +1,11 @@
+## 0.2.0
+
+- Renamed the Flutter package from `yc_product_plugin` to `vyana_sdk`.
+- Added `package:vyana_sdk/vyana_sdk.dart` as the recommended public import.
+- Kept native Android package names, native plugin class names, and method channels unchanged for runtime compatibility.
+- Updated Android Gradle local artifact lookup and iOS podspec naming for the new Flutter package name.
+- Updated docs to reference the Git-backed `vyana_sdk` package.
+
 ## 0.1.0-vyana.1
 
 - Created the Vyana-maintained internal SDK package from the working Yucheng Flutter plugin used by the Vyana app.

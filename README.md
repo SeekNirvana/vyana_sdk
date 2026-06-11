@@ -20,19 +20,19 @@ Add the SDK to your Flutter app:
 
 ```yaml
 dependencies:
-  yc_product_plugin:
+  vyana_sdk:
     git:
       url: https://github.com/SeekNirvana/vyana_sdk.git
-      ref: v0.1.0-vyana.1
+      ref: v0.2.0
 ```
 
 Then import the plugin:
 
 ```dart
-import 'package:yc_product_plugin/yc_product_plugin.dart';
+import 'package:vyana_sdk/vyana_sdk.dart';
 ```
 
-The Flutter package name remains `yc_product_plugin` in this release for compatibility with the original plugin surface and the current Vyana app integration. The repository is named `vyana_sdk` because this is the Seek Nirvana maintained SDK distribution.
+The Flutter package name is `vyana_sdk`. Native Android package names, native plugin class names, and method channels remain compatible with the original bridge so existing runtime behavior stays stable.
 
 ## Platform Support
 

@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:yc_product_plugin/yc_product_plugin.dart';
+import 'package:vyana_sdk/yc_product_plugin.dart';
 
 import 'yc_product_plugin_platform_interface.dart';
 import 'yc_product_plugin_data_type.dart';

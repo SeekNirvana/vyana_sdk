@@ -8,10 +8,10 @@ Use the public GitHub repository and pin to a release tag:
 
 ```yaml
 dependencies:
-  yc_product_plugin:
+  vyana_sdk:
     git:
       url: https://github.com/SeekNirvana/vyana_sdk.git
-      ref: v0.1.0-vyana.1
+      ref: v0.2.0
 ```
 
 Then run:
@@ -23,10 +23,10 @@ flutter pub get
 ## Import the SDK
 
 ```dart
-import 'package:yc_product_plugin/yc_product_plugin.dart';
+import 'package:vyana_sdk/vyana_sdk.dart';
 ```
 
-The package name remains `yc_product_plugin` for compatibility with the original Flutter plugin surface. The repository name is `vyana_sdk`.
+The package name is `vyana_sdk`. The original lower-level API surface is still exported, so existing classes such as `YcProductPlugin` remain available.
 
 ## Local Development
 
@@ -34,7 +34,7 @@ For local SDK work, point your app at a local checkout:
 
 ```yaml
 dependencies:
-  yc_product_plugin:
+  vyana_sdk:
     path: ../vyana_sdk
 ```
 
@@ -42,7 +42,7 @@ Switch back to the Git dependency before release builds unless you intentionally
 
 ## Native Registration
 
-These identifiers are intentionally unchanged in `v0.1.0-vyana.1`:
+These identifiers are intentionally unchanged in `v0.2.0`:
 
 - Android package: `com.example.yc_product_plugin`
 - Android plugin class: `YcProductPlugin`

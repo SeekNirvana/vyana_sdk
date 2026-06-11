@@ -1,10 +1,10 @@
 #
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html.
-# Run `pod lib lint yc_product_plugin.podspec` to validate before publishing.
+# Run `pod lib lint vyana_sdk.podspec` to validate before publishing.
 #
 Pod::Spec.new do |s|
-  s.name             = 'yc_product_plugin'
-  s.version          = '0.1.0-vyana.1'
+  s.name             = 'vyana_sdk'
+  s.version          = '0.2.0'
   s.summary          = 'Flutter SDK bridge for apps that interface with PRANA smart rings.'
   s.description      = <<-DESC
 Flutter plugin bridge for apps that discover, connect to, and interface with PRANA smart rings from Seek Nirvana.
