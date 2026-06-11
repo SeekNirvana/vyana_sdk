@@ -1,0 +1,12 @@
+Vyana SDK
+Copyright (c) 2026 SeekNirvana
+
+Vyana SDK is maintained by Seek Nirvana for apps that discover, connect to,
+and interface with PRANA version rings.
+
+This SDK distribution is licensed under the GNU Lesser General Public License
+v3.0. See LICENSE and LICENSE-GPL-3.0.txt.
+
+This SDK also contains Yucheng-originated code and related artifacts made
+available under the Mulan Permissive Software License v2. See
+LICENSE-MULANPSL-2.0.txt and THIRD_PARTY_NOTICES.md.
