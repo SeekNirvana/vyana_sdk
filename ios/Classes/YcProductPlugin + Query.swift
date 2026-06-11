@@ -114,14 +114,52 @@ extension YcProductPlugin {
     ///   - arguments: <#arguments description#>
     ///   - result: <#result description#>
     public func getDeviceFeature(_ arguments: Any?, result: @escaping FlutterResult) {
-        
+        resolveDeviceFeature(attemptsRemaining: 6, result: result)
+    }
+
+    /// Resolves the capability bitmap, polling until it looks populated.
+    ///
+    /// On iOS the support bitmap lives on the peripheral and is filled in by the
+    /// SDK from advertisement/scan data and the post-connect handshake — unlike
+    /// Android, where `isSupportFunction` is a live query. When the ring is
+    /// reached via auto-reconnect (no fresh scan) or the query races the
+    /// handshake, `supportItems` can briefly read back all-false. We retry for a
+    /// few seconds and, if it never populates, report `unavailable` (rather than
+    /// a bogus `succeed` with every flag false) so the Flutter layer can refresh.
+    private func resolveDeviceFeature(attemptsRemaining: Int, result: @escaping FlutterResult) {
+
         guard let items = YCProduct.shared.currentPeripheral?.supportItems else {
-            
+
             result(["code": PluginState.failed, "data": [:]])
             return
         }
-        
-        let deviceFeature =
+
+        let deviceFeature = deviceFeatureMap(items)
+
+        if deviceFeatureLooksPopulated(deviceFeature) {
+            result(["code": PluginState.succeed, "data": deviceFeature])
+            return
+        }
+
+        if attemptsRemaining <= 0 {
+            result(["code": PluginState.unavailable, "data": deviceFeature])
+            return
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            self?.resolveDeviceFeature(attemptsRemaining: attemptsRemaining - 1, result: result)
+        }
+    }
+
+    /// A freshly-defaulted `supportItems` reports every flag as `false`; any
+    /// `true` entry means the SDK has parsed real capability data for the device.
+    private func deviceFeatureLooksPopulated(_ map: [String: Any]) -> Bool {
+        return map.values.contains { ($0 as? Bool) == true }
+    }
+
+    private func deviceFeatureMap(_ items: YCProductFunctionSupportItems) -> [String: Any] {
+
+        return
         [
             /// 血压
             "isSupportBloodPressure": items.isSupportBloodPressure,
@@ -581,9 +619,7 @@ extension YcProductPlugin {
             
             /// 是否支持零星小睡
             "isSupportFewSleep": items.isSupportFewSleep,
-            
+
         ]
-        
-        result(["code": PluginState.succeed, "data": deviceFeature])
     }
 }

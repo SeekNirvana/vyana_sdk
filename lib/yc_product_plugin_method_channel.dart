@@ -244,6 +244,10 @@ class MethodChannelYcProductPlugin extends YcProductPluginPlatform {
           device.deviceFeature = DeviceFeature.fromJson(map as Map);
         return DeviceFeature.fromJson(map as Map);
       }
+
+      // code == unavailable means connected but the capability bitmap has not
+      // populated yet (common on iOS after auto-reconnect); the caller can retry.
+      debugPrint('getDeviceFeature returned code=$code (no capabilities yet)');
     } catch (e) {
       print('获取设备功能失败: $e');
       // 返回默认的DeviceFeature或null
