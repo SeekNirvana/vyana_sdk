@@ -7,6 +7,7 @@
 
 import Flutter
 import UIKit
+import CoreBluetooth
 import YCProductSDK
 import JL_BLEKit
 import JLDialUnit
@@ -117,7 +118,23 @@ extension YcProductPlugin {
     public func getBluetoothState(result: @escaping FlutterResult) {
     
         let state = YCProduct.shared.centralManagerState
-        let bleState = setupBlutetoothState(state)
+        let bleState = setupBluetoothState(state)
+        
+        if bleState == BluetoothState.off {
+            result(bleState)
+            return
+        }
+        
+        if let currentPeripheral = YCProduct.shared.currentPeripheral,
+           currentPeripheral.state == .connected {
+            result(BluetoothState.connected)
+            return
+        }
+        
+        if YCProduct.shared.connectedPeripherals.contains(where: { $0.state == .connected }) {
+            result(BluetoothState.connected)
+            return
+        }
         
         result(bleState)
     }
@@ -169,7 +186,7 @@ extension YcProductPlugin {
         
          
         // 适配Flutter BluetoothState
-        let bleState = setupBlutetoothState(state)
+        let bleState = setupBluetoothState(state)
         
         // 如果已经连接了
         if state == YCProductState.connected,
@@ -200,7 +217,7 @@ extension YcProductPlugin {
     /// 适配状态
     /// - Parameter state: <#state description#>
     /// - Returns: <#description#>
-    private func setupBlutetoothState(_ state: YCProductState) -> Int {
+    private func setupBluetoothState(_ state: YCProductState) -> Int {
         
         var bleState = BluetoothState.off
         

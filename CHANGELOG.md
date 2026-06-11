@@ -1,3 +1,8 @@
+## 0.2.1
+
+- Fixed iOS Bluetooth readiness reporting so an already-connected PRANA
+  peripheral is exposed to Flutter as `BluetoothState.connected`.
+
 ## 0.2.0
 
 - Renamed the Flutter package from `yc_product_plugin` to `vyana_sdk`.

@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'vyana_sdk'
-  s.version          = '0.2.0'
+  s.version          = '0.2.1'
   s.summary          = 'Flutter SDK bridge for apps that interface with PRANA smart rings.'
   s.description      = <<-DESC
 Flutter plugin bridge for apps that discover, connect to, and interface with PRANA smart rings from Seek Nirvana.

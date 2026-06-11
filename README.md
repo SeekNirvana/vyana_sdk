@@ -23,7 +23,7 @@ dependencies:
   vyana_sdk:
     git:
       url: https://github.com/SeekNirvana/vyana_sdk.git
-      ref: v0.2.0
+      ref: v0.2.1
 ```
 
 Then import the plugin:

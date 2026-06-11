@@ -11,7 +11,7 @@ dependencies:
   vyana_sdk:
     git:
       url: https://github.com/SeekNirvana/vyana_sdk.git
-      ref: v0.2.0
+      ref: v0.2.1
 ```
 
 Then run:
@@ -42,7 +42,7 @@ Switch back to the Git dependency before release builds unless you intentionally
 
 ## Native Registration
 
-These identifiers are intentionally unchanged in `v0.2.0`:
+These identifiers are intentionally unchanged:
 
 - Android package: `com.example.yc_product_plugin`
 - Android plugin class: `YcProductPlugin`
