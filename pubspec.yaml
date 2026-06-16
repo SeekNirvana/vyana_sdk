@@ -1,6 +1,6 @@
 name: vyana_sdk
 description: Flutter SDK bridge for apps that discover and interface with PRANA smart rings from Seek Nirvana.
-version: 0.2.3
+version: 0.2.4
 publish_to: none
 homepage: https://github.com/SeekNirvana/vyana_sdk
 

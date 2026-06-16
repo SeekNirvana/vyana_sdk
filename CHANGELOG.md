@@ -1,3 +1,10 @@
+## 0.2.4
+
+- Fixed iOS build break in `getDeviceFeature`: the capability map literal was
+  written as `return` on its own line followed by `[` on the next, which Swift
+  treats as a separate expression. Benign as a warning, but fatal once the host
+  app's Pods project elevates warnings — now `return [` on one line.
+
 ## 0.2.3
 
 - Fixed Android realtime data streaming (`realTimeDataUpload`): the Flutter

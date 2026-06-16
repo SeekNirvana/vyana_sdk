@@ -159,8 +159,7 @@ extension YcProductPlugin {
 
     private func deviceFeatureMap(_ items: YCProductFunctionSupportItems) -> [String: Any] {
 
-        return
-        [
+        return [
             /// 血压
             "isSupportBloodPressure": items.isSupportBloodPressure,
             
