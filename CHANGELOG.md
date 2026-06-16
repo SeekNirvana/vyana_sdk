@@ -1,3 +1,10 @@
+## 0.2.5
+
+- Fixed `getECGResult` crashing with "type 'String' is not a subtype of Map"
+  when the on-device AI diagnosis is not ready yet (native returns an empty
+  string for `data`). The cast is now guarded and returns a null result so the
+  caller can retry until a valid diagnosis arrives, instead of throwing.
+
 ## 0.2.4
 
 - Fixed iOS build break in `getDeviceFeature`: the capability map literal was
