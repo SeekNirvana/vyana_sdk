@@ -1200,10 +1200,11 @@ class MethodChannelYcProductPlugin extends YcProductPluginPlatform {
     final data = info?["data"];
 
     // The on-device AI diagnosis is asynchronous: until it is ready the native
-    // side returns an empty string for `data`. Guard the cast so callers can
-    // simply retry instead of catching a cast exception.
+    // side returns an empty string for `data`. Guard the cast and return null
+    // (PluginResponse.data is non-nullable) so callers simply retry instead of
+    // catching a cast exception.
     if (data is! Map) {
-      return PluginResponse(statusCode, null);
+      return null;
     }
 
     final result = DeviceECGResult.fromMap(data);

@@ -1,3 +1,7 @@
+## 0.2.6
+
+- Fixed a compile error in v0.2.5: getECGResult returned PluginResponse(statusCode, null) but PluginResponse.data is non-nullable. It now returns null when the AI diagnosis is not yet a Map, so callers retry cleanly.
+
 ## 0.2.5
 
 - Fixed `getECGResult` crashing with "type 'String' is not a subtype of Map"

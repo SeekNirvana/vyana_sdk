@@ -11,7 +11,7 @@ dependencies:
   vyana_sdk:
     git:
       url: https://github.com/SeekNirvana/vyana_sdk.git
-      ref: v0.2.5
+      ref: v0.2.6
 ```
 
 Then run:
