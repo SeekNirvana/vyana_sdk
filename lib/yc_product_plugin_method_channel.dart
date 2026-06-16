@@ -1196,10 +1196,17 @@ class MethodChannelYcProductPlugin extends YcProductPluginPlatform {
   Future<PluginResponse<DeviceECGResult>?> getECGResult() async {
     final info = await methodChannel.invokeMethod<Map>('getECGResult');
 
-    final int statusCode = info?["code"];
-    final map = info?["data"] as Map;
+    final int statusCode = info?["code"] ?? PluginState.failed;
+    final data = info?["data"];
 
-    final result = DeviceECGResult.fromMap(map);
+    // The on-device AI diagnosis is asynchronous: until it is ready the native
+    // side returns an empty string for `data`. Guard the cast so callers can
+    // simply retry instead of catching a cast exception.
+    if (data is! Map) {
+      return PluginResponse(statusCode, null);
+    }
+
+    final result = DeviceECGResult.fromMap(data);
 
     return PluginResponse(statusCode, result);
   }
