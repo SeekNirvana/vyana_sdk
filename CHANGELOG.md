@@ -1,3 +1,12 @@
+## 0.2.3
+
+- Fixed Android realtime data streaming (`realTimeDataUpload`): the Flutter
+  `DeviceRealTimeDataType` enum index was passed straight to the SDK's
+  `appRealDataFromDevice`, which expects a `Constants.DATATYPE.Real_Upload*`
+  code (1536+). Index 1 (heartRate) was therefore never interpreted as
+  `Real_UploadHeart` (1537), so continuous HR never streamed during an
+  activity session. Now translated (iOS already used matching raw values).
+
 ## 0.2.2
 
 - Fixed iOS ring capability detection so ad-hoc HR/SpO2/etc. tests appear.

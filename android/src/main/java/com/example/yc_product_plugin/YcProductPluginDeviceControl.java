@@ -285,7 +285,12 @@ public class YcProductPluginDeviceControl {
         boolean state = (boolean) list.get(0);
         int dataType = (int) list.get(1);
 
-        YCBTClient.appRealDataFromDevice(state ? 1 : 0, dataType, new BleDataResponse() {
+        // Flutter sends the DeviceRealTimeDataType enum index (0..7); the SDK's
+        // appRealDataFromDevice expects a Constants.DATATYPE.Real_Upload* code
+        // (1536+). Translate (passing through a raw SDK code if one is given).
+        int sdkType = mapRealTimeDataType(dataType);
+
+        YCBTClient.appRealDataFromDevice(state ? 1 : 0, sdkType, new BleDataResponse() {
             @Override
             public void onDataResponse(int i, float v, HashMap hashMap) {
                 int state = YcProductPlugin.convertPluginState(i);
@@ -295,6 +300,34 @@ public class YcProductPluginDeviceControl {
                 result.success(map);
             }
         });
+    }
+
+    /// Maps DeviceRealTimeDataType (Flutter enum index) to the SDK realtime
+    /// data-type constant expected by appRealDataFromDevice.
+    private static int mapRealTimeDataType(int index) {
+        switch (index) {
+            case 0: // step
+                return Constants.DATATYPE.Real_UploadSport;
+            case 1: // heartRate
+                return Constants.DATATYPE.Real_UploadHeart;
+            case 2: // bloodOxygen
+                return Constants.DATATYPE.Real_UploadBloodOxygen;
+            case 3: // bloodPressure
+                return Constants.DATATYPE.Real_UploadBlood;
+            case 4: // hrv
+                return Constants.DATATYPE.Real_UploadECGHrv;
+            case 5: // respirationRate
+                return Constants.DATATYPE.Real_UploadRespiratoryRate;
+            case 6: // sportMode
+                return Constants.DATATYPE.Real_UploadRun;
+            case 7: // combinedData
+                return Constants.DATATYPE.Real_UploadComprehensive;
+            default:
+                // Already an SDK Real_Upload* code, or unknown — pass through.
+                return index >= Constants.DATATYPE.Real_UploadSport
+                        ? index
+                        : Constants.DATATYPE.Real_UploadHeart;
+        }
     }
 
 
