@@ -9,6 +9,8 @@ import com.yucheng.ycbtsdk.response.BleDataResponse;
 import com.yucheng.ycbtsdk.utils.DeviceSupportFunctionUtil;
 import com.yucheng.ycbtsdk.utils.SPUtil;
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,41 +19,71 @@ import io.flutter.plugin.common.MethodChannel;
 // MARK: - 查询
 public class YcProductPluginQuery {
 
+    private static final String TAG = "YcProductPlugin";
+
     /// 查询基本信息
     public static void queryDeviceBasicInfo(Object arguments, @NonNull MethodChannel.Result result) {
 
         YCBTClient.getDeviceInfo(new BleDataResponse() {
             @Override
             public void onDataResponse(int i, float v, HashMap hashMap) {
-
-                int state = YcProductPlugin.convertPluginState(i);
                 HashMap map = new HashMap();
                 HashMap data = new HashMap();
+                try {
+                    int state = YcProductPlugin.convertPluginState(i);
 
-                if (i == 0 && hashMap != null) {
+                    if (i == 0 && hashMap != null) {
+                        HashMap obj = asHashMap(hashMap.get("data"));
+                        if (obj != null) {
+                            data.put("deviceID", asInt(obj.get("deviceId")));
+                            data.put("deviceType", asInt(obj.get("hardwareType")));
+                            data.put("batteryStatus", asInt(obj.get("deviceBatteryState")));
+                            data.put("batteryPower", asInt(obj.get("deviceBatteryValue")));
+                            data.put("firmwareMajorVersion", asInt(obj.get("deviceMainVersion")));
+                            data.put("firmwareSubVersion", asInt(obj.get("deviceSubVersion")));
+                        } else {
+                            Object rawData = hashMap.get("data");
+                            if (rawData != null) {
+                                Log.w(
+                                    TAG,
+                                    "getDeviceInfo returned unexpected data type: "
+                                        + rawData.getClass().getSimpleName()
+                                );
+                            }
+                        }
+                    }
 
-                    HashMap obj = (HashMap) hashMap.get("data");
-
-                    int deviceID = (int) obj.get("deviceId");
-                    int deviceType = (int) obj.get("hardwareType");
-                    int batteryStatus = (int) obj.get("deviceBatteryState");
-                    int batteryPower = (int) obj.get("deviceBatteryValue");
-                    int firmwareMajorVersion = (int) obj.get("deviceMainVersion");
-                    int firmwareSubVersion = (int) obj.get("deviceSubVersion");
-
-                    data.put("deviceID", deviceID);
-                    data.put("deviceType", deviceType);
-                    data.put("batteryStatus", batteryStatus);
-                    data.put("batteryPower", batteryPower);
-                    data.put("firmwareMajorVersion", firmwareMajorVersion);
-                    data.put("firmwareSubVersion", firmwareSubVersion);
+                    map.put("code", state);
+                    map.put("data", data);
+                    result.success(map);
+                } catch (Throwable error) {
+                    Log.e(TAG, "queryDeviceBasicInfo callback failed", error);
+                    map.put("code", YcProductPluginFlutterType.PluginState.failed);
+                    map.put("data", data);
+                    result.success(map);
                 }
-
-                map.put("code", state);
-                map.put("data", data);
-                result.success(map);
             }
         });
+    }
+
+    private static HashMap asHashMap(Object raw) {
+        if (raw instanceof HashMap) {
+            return (HashMap) raw;
+        }
+        if (raw instanceof Map) {
+            return new HashMap((Map) raw);
+        }
+        return null;
+    }
+
+    private static int asInt(Object raw) {
+        if (raw instanceof Integer) {
+            return (Integer) raw;
+        }
+        if (raw instanceof Number) {
+            return ((Number) raw).intValue();
+        }
+        return 0;
     }
 
     /// 查询mac地址

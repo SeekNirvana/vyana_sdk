@@ -348,14 +348,19 @@ class MethodChannelYcProductPlugin extends YcProductPluginPlatform {
 
   @override
   Future<PluginResponse<DeviceBasicInfo>?> queryDeviceBasicInfo() async {
-    final result =
-        await methodChannel.invokeMethod<Map>('queryDeviceBasicInfo');
+    try {
+      final result = await methodChannel
+          .invokeMethod<Map>('queryDeviceBasicInfo')
+          .timeout(const Duration(seconds: 8));
 
-    final int statusCode = result?["code"];
-    final dict = result?["data"];
-    final info = DeviceBasicInfo.fromJson(dict);
+      final int statusCode = result?["code"];
+      final dict = result?["data"];
+      final info = DeviceBasicInfo.fromJson(dict);
 
-    return PluginResponse(statusCode, info);
+      return PluginResponse(statusCode, info);
+    } on TimeoutException {
+      return PluginResponse(PluginState.failed, DeviceBasicInfo.fromJson({}));
+    }
   }
 
   @override
